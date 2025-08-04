@@ -9,7 +9,7 @@
   <h1 class="text-4xl font-extrabold mb-8 text-gray-800">String Toolbox</h1>
 
   <textarea id="inputText" rows="6" placeholder="Paste or type your text here..."
-    class="w-full max-w-3xl p-4 border border-gray-300 rounded-md mb-6 resize-y focus:outline-none focus:ring-2 focus:ring-blue-500"></textarea>
+    class="font-mono w-full max-w-3xl p-4 border border-gray-300 rounded-md mb-6 resize-y focus:outline-none focus:ring-2 focus:ring-blue-500"></textarea>
 
   <div class="max-w-3xl w-full grid grid-cols-1 sm:grid-cols-2 md:grid-cols-4 gap-4 mb-6">
     <!-- Case Conversions -->
@@ -29,11 +29,14 @@
     <button onclick="countWords()" class="action-btn">Count Words</button>
     <button onclick="estimateReadingTime()" class="action-btn">Estimate Reading Time</button>
 
+    <!-- Clear Button -->
+    <button onclick="clearText()" class="action-btn bg-red-600 hover:bg-red-700">Clear</button>
+
     <!-- Clipboard -->
     <button onclick="copyOutput()" class="action-btn col-span-full sm:col-span-2 md:col-span-4 bg-green-600 hover:bg-green-700">Copy Output</button>
   </div>
 
-  <div id="output" class="max-w-3xl w-full p-4 bg-white border border-gray-300 rounded-md min-h-[120px] whitespace-pre-wrap"></div>
+  <div id="output" class="font-mono max-w-3xl w-full p-4 bg-white border border-gray-300 rounded-md min-h-[120px] whitespace-pre-wrap"></div>
 
   <script>
     const input = document.getElementById('inputText');
@@ -106,6 +109,11 @@
       // Average adult reads 200 wpm
       const minutes = Math.ceil(words / 200);
       output.textContent = `Estimated reading time: ${minutes} minute${minutes > 1 ? 's' : ''}`;
+    }
+
+    function clearText() {
+      input.value = '';
+      output.textContent = '';
     }
 
     function copyOutput() {
