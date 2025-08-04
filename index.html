@@ -1,0 +1,125 @@
+<!DOCTYPE html>
+<html lang="en" >
+<head>
+  <meta charset="UTF-8" />
+  <title>String Toolbox - Expanded MVP</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+</head>
+<body class="bg-gray-100 min-h-screen flex flex-col items-center p-6 font-sans">
+  <h1 class="text-4xl font-extrabold mb-8 text-gray-800">String Toolbox</h1>
+
+  <textarea id="inputText" rows="6" placeholder="Paste or type your text here..."
+    class="w-full max-w-3xl p-4 border border-gray-300 rounded-md mb-6 resize-y focus:outline-none focus:ring-2 focus:ring-blue-500"></textarea>
+
+  <div class="max-w-3xl w-full grid grid-cols-1 sm:grid-cols-2 md:grid-cols-4 gap-4 mb-6">
+    <!-- Case Conversions -->
+    <button onclick="toUpperCase()" class="action-btn">UPPERCASE</button>
+    <button onclick="toLowerCase()" class="action-btn">lowercase</button>
+    <button onclick="toCamelCase()" class="action-btn">camelCase</button>
+    <button onclick="toSnakeCase()" class="action-btn">snake_case</button>
+
+    <!-- Encoding -->
+    <button onclick="base64Encode()" class="action-btn">Base64 Encode</button>
+    <button onclick="base64Decode()" class="action-btn">Base64 Decode</button>
+    <button onclick="urlEncode()" class="action-btn">URL Encode</button>
+    <button onclick="urlDecode()" class="action-btn">URL Decode</button>
+
+    <!-- Analytics -->
+    <button onclick="countChars()" class="action-btn">Count Characters</button>
+    <button onclick="countWords()" class="action-btn">Count Words</button>
+    <button onclick="estimateReadingTime()" class="action-btn">Estimate Reading Time</button>
+
+    <!-- Clipboard -->
+    <button onclick="copyOutput()" class="action-btn col-span-full sm:col-span-2 md:col-span-4 bg-green-600 hover:bg-green-700">Copy Output</button>
+  </div>
+
+  <div id="output" class="max-w-3xl w-full p-4 bg-white border border-gray-300 rounded-md min-h-[120px] whitespace-pre-wrap"></div>
+
+  <script>
+    const input = document.getElementById('inputText');
+    const output = document.getElementById('output');
+
+    function toUpperCase() {
+      output.textContent = input.value.toUpperCase();
+    }
+
+    function toLowerCase() {
+      output.textContent = input.value.toLowerCase();
+    }
+
+    function toCamelCase() {
+      const text = input.value.toLowerCase().trim();
+      const words = text.split(/[\s_-]+/);
+      if (!words.length) {
+        output.textContent = '';
+        return;
+      }
+      const camel = words[0] + words.slice(1).map(w => w.charAt(0).toUpperCase() + w.slice(1)).join('');
+      output.textContent = camel;
+    }
+
+    function toSnakeCase() {
+      const text = input.value.trim();
+      const snake = text.toLowerCase().replace(/\s+/g, '_').replace(/[^\w_]/g, '');
+      output.textContent = snake;
+    }
+
+    function base64Encode() {
+      try {
+        output.textContent = btoa(input.value);
+      } catch (e) {
+        output.textContent = 'Invalid input for Base64 encoding.';
+      }
+    }
+
+    function base64Decode() {
+      try {
+        output.textContent = atob(input.value);
+      } catch (e) {
+        output.textContent = 'Invalid Base64 string.';
+      }
+    }
+
+    function urlEncode() {
+      output.textContent = encodeURIComponent(input.value);
+    }
+
+    function urlDecode() {
+      try {
+        output.textContent = decodeURIComponent(input.value);
+      } catch (e) {
+        output.textContent = 'Invalid URL encoding.';
+      }
+    }
+
+    function countChars() {
+      output.textContent = `Characters: ${input.value.length}`;
+    }
+
+    function countWords() {
+      const words = input.value.trim().split(/\s+/).filter(Boolean);
+      output.textContent = `Words: ${words.length}`;
+    }
+
+    function estimateReadingTime() {
+      const words = input.value.trim().split(/\s+/).filter(Boolean).length;
+      // Average adult reads 200 wpm
+      const minutes = Math.ceil(words / 200);
+      output.textContent = `Estimated reading time: ${minutes} minute${minutes > 1 ? 's' : ''}`;
+    }
+
+    function copyOutput() {
+      if (!output.textContent) return alert('Nothing to copy!');
+      navigator.clipboard.writeText(output.textContent).then(() => {
+        alert('Copied to clipboard!');
+      });
+    }
+  </script>
+
+  <style>
+    .action-btn {
+      @apply bg-blue-600 text-white font-semibold py-3 rounded hover:bg-blue-700 transition;
+    }
+  </style>
+</body>
+</html>
